@@ -12,7 +12,6 @@
         "test": "npm-run-all test:*",
         "test:html": "html-validate src/*.html",
         "test:js": "eslint src/js/",
-        "test:scss": "stylelint src/sass/",
         "build": "npm-run-all build:* test",
         "build:clean": "rimraf dist && mkdirp dist",
         "build:copy": "copyfiles -a -u 1 -e \"**/sass/**/*\" -e \"**/.gitkeep\" \"src/**/*\" dist",
@@ -44,5 +43,8 @@
         "sass": "^1.44.0",
         "stylelint": "^9.10.1",
         "stylelint-scss": "^3.5.4"
+    },
+    "dependencies": {
+        "stylelint-config-recommended-scss": "^10.0.0"
     }
 }
