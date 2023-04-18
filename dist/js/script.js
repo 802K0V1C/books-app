@@ -13,3 +13,29 @@ function render() {
   }  
 }
 render();
+
+const favoriteBooks = [];
+
+function initActions(){
+
+  const booksImage = document.querySelectorAll('.book__image');
+
+  for(let image of booksImage){
+
+    image.addEventListener('dbclick', function(event){ 
+      event.preventDefault();
+
+      const bookId = image.getAttribute('data-id'); 
+
+      if(!favoriteBooks.includes(bookId)){ 
+        favoriteBooks.push(bookId);  
+        image.classlist.add('favorite');
+      } else {
+        favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1);
+        image.classList.remove('favorite');
+      }
+    });
+  }
+}
+
+initActions();
