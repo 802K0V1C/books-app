@@ -1,12 +1,17 @@
 const template = Handlebars.compile(document.querySelector('#template-book').innerHTML);
 // console.log(template);
-const booksList = document.querySelector('.books-list');
-// console.log(booksList);
 
 function render(){
-
+  const thisBookList = this;
+  const booksList = document.querySelector('.books-list');
+  // console.log(booksList);
   // eslint-disable-next-line no-undef
   for (let book of dataSource.books) {
+
+    const ratingBgc = thisBookList.determineRatingBgc(book.rating);
+    book.ratingWidth = book.rating * 10;
+    book.ratingBgc = ratingBgc;
+    
     const generatedHTML = template(book);
     booksList.innerHTML += generatedHTML;     
     // console.log(generatedHTML);
@@ -18,6 +23,7 @@ function initActions(){
   const thisBookList = this;
 
   const favoriteBooks = [];
+  const filters = [];
 
   const booksImage = document.querySelectorAll('.book__image');
 
@@ -38,8 +44,6 @@ function initActions(){
       }
     });
   }
-  
-  const filters = [];
 
   thisBookList.filterList.addEventListener('click', function(event){
 
@@ -59,6 +63,7 @@ initActions();
 
 function filterBooks(filters){
 
+  // eslint-disable-next-line no-undef
   for (const book of dataSource.books){
   
     const bookImage = document.querySelector('book__image[data-id="' + book.id + '"]');
@@ -81,3 +86,19 @@ function filterBooks(filters){
   }
 }
 filterBooks();
+
+function determineRatingBgc(rating) {
+  let background = '';
+
+  if(rating < 6) {
+    background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)'; 
+  } else if(rating > 6 && rating <= 8) {
+    background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+  } else if(rating > 8 && rating <= 9) {
+    background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+  } else if(rating > 9) {
+    background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+  }  
+  return background;
+}
+determineRatingBgc();
