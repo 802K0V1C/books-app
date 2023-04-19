@@ -2,17 +2,15 @@ const template = Handlebars.compile(document.querySelector('#template-book').inn
 // console.log(template);
 class BooksList {
 
-  constructor(id){
+  constructor(){
     const thisBookList = this;
+    this.filters = [];
 
-    thisBookList.id = id;
-
-    thisBookList.render();
     thisBookList.initData();
+    thisBookList.render();
     thisBookList.getElements();
     thisBookList.initActions();
     thisBookList.filterBooks();
-    thisBookList.ratingBgc();
   }
 
   render(){
@@ -20,7 +18,7 @@ class BooksList {
     const bookList = document.querySelector('.books-list');
   
     // eslint-disable-next-line no-undef
-    for (let book of dataSource.books) {
+    for (let book of thisBookList.data) {
 
       const ratingBgc = thisBookList.determineRatingBgc(book.rating);
       book.ratingWidth = book.rating * 10;
@@ -48,11 +46,10 @@ class BooksList {
     const thisBookList = this;
 
     const favoriteBooks = [];
-    const filters = [];
     // const booksImage = document.querySelectorAll('.book__image');
 
     for(let image of thisBookList.booksImage){
-      image.addEventListener('dbclick', function(event){ 
+      image.addEventListener('dblclick', function(event){ 
         event.preventDefault();
         event.target.classList.toggle('favorite');
         const bookId = event.target.getAttribute('data-id'); 
@@ -73,23 +70,23 @@ class BooksList {
     
       if(checkbox.tagName == 'INPUT' && checkbox.type == 'checkbox' && checkbox.name == 'filter'){
         if(checkbox.checked){
-          filters.push(checkbox.value);
+          this.filters.push(checkbox.value);
         } else {
-          filters.splice(filters.indexOf(checkbox.value), 1);
+          this.filters.splice(this.filters.indexOf(checkbox.value), 1);
         }
-        thisBookList.filterBooks(filters);
+        thisBookList.filterBooks();
       }
     });
   }
 
-  filterBooks(filters){
+  filterBooks(){
 
     // eslint-disable-next-line no-undef
     for (const book of dataSource.books){
       const bookImage = document.querySelector('.book__image[data-id="' + book.id + '"]');
       let shouldBeHidden = false;
 
-      for (const filter of filters){
+      for (const filter of this.filters){
         if(!book.details[filter]){
           shouldBeHidden = true;
           break;
@@ -122,4 +119,4 @@ class BooksList {
   }
 }
 
-const app = new BooksList();
+new BooksList();
